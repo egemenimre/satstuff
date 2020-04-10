@@ -26,7 +26,7 @@ if __name__ == '__main__':
     jd_init = 2458826
     init_time = 0.0  # days
     end_time = 3.0  # days
-    steps = 3000  # number of steps between init and end
+    steps = 4000  # number of steps between init and end
     stepsize = (end_time - init_time) / steps  # stepsize in days
     jd_list = np.full(steps, jd_init)
     fr_list = np.arange(init_time, end_time, (end_time - init_time) / steps)
@@ -56,7 +56,7 @@ if __name__ == '__main__':
     # print(f"TEME Velocity (km/s): {v[index]}")
 
     # ****** Fill interpolator with time and (x, y, z) axes ******
-    spline_degree = 4  # degree of spline
+    spline_degree = 5  # degree of spline
     extrapolate_action = "raise"  # raise Exception if an out of bounds point is requested
 
     timer_start = time.perf_counter()  # start timer for performance check
