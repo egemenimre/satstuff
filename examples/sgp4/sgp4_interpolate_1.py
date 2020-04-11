@@ -1,5 +1,7 @@
 """
 This is a an example for Brandon Rhodes' `sgp4` module with the trajectory interpolation thrown in.
+
+Licensed under GNU GPL v3.0. See LICENSE.rst for more info.
 """
 import time
 
