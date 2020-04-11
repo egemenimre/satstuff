@@ -15,6 +15,7 @@ from astropy.coordinates import get_sun, get_moon
 from astropy.time import Time, TimeDelta
 
 if __name__ == '__main__':
+
     # Init location - default Ellipsoid is WGS84
     istanbul: EarthLocation = EarthLocation(lat=41.015137, lon=28.979530, height=0 * u.m)
     ist_timezone = pytz.timezone("Turkey")
@@ -49,8 +50,8 @@ if __name__ == '__main__':
     plt.xticks(rotation=90)
 
     plt.title(f"Sun and Moon Altitude at Istanbul ({init_time.to_datetime(timezone=ist_timezone).date()})")
-    plt.xlabel('Time [Local]')
-    plt.ylabel('Altitude [deg]')
+    plt.xlabel("Time [Local]")
+    plt.ylabel("Altitude [deg]")
     plt.legend(["Sun", "Moon", f"{min_elev} deg el"])
 
     plt.show()
