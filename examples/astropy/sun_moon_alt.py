@@ -1,5 +1,5 @@
 """
-Use `astropy` to generate Sun and Moon rise-set times for a location on Earth.
+Use `astropy` to generate Sun and Moon altitude variation for a location on Earth.
 
 Licensed under GNU GPL v3.0. See LICENSE.rst for more info.
 """
