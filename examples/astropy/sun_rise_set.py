@@ -40,7 +40,7 @@ if __name__ == '__main__':
     # ***** Generate the altitude interpolators *****
 
     # Convert time list into a float list for use with the interpolator (possible loss of precision)
-    t__float_list = np.ndarray(list(map(lambda t: t.timestamp(), sun_alt_az_list.obstime.to_datetime())))
+    t__float_list = list(map(lambda t: t.timestamp(), sun_alt_az_list.obstime.to_datetime()))
 
     # Init interpolators (for splines, root finding possible for 3rd degree (cubics) only)
     sun_alt_interpolator = interpolate.Akima1DInterpolator(t__float_list, sun_alt_az_list.alt.deg)
