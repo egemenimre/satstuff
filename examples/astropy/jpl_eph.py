@@ -8,21 +8,27 @@ Licensed under GNU GPL v3.0. See LICENSE.rst for more info.
 import numpy as np
 
 from astropy import units as u
-from astropy.coordinates import solar_system_ephemeris, get_body
+from astropy.coordinates import solar_system_ephemeris, get_body, get_sun
 from astropy.time import Time
 
 if __name__ == '__main__':
     # Target time
     init_time: Time = Time("2020-04-12T00:00:00", scale="tdb")
 
-    with solar_system_ephemeris.set("builtin"):
-        sun = get_body('sun', init_time)
-
     print(f"Target time in {init_time.scale}: {init_time}")
 
+    print("-------------------")
     print("Sun coords with low precision default:")
-    print(sun.cartesian.xyz.to(u.km))
+    with solar_system_ephemeris.set("builtin"):
+        sun_builtin = get_body('sun', init_time)
+    print(sun_builtin.cartesian.xyz.to(u.km))
 
+    print("-------------------")
+    print("Sun coords with get_sun:")
+    sun_getsun = get_sun(init_time)
+    print(sun_getsun.cartesian.xyz.to(u.km))
+
+    print("-------------------")
     print("Sun coords with high precision de432s:")
     with solar_system_ephemeris.set("de432s"):
         sun_jpl = get_body('sun', init_time)
