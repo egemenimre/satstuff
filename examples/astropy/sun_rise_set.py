@@ -3,8 +3,6 @@ Use `astropy` and an interpolator to generate Sun rise-set times for a location 
 
 Licensed under GNU GPL v3.0. See LICENSE.rst for more info.
 """
-from datetime import datetime
-
 import matplotlib.pyplot as plt
 import numpy as np
 import pytz
@@ -20,6 +18,7 @@ if __name__ == '__main__':
     # Init location - default Ellipsoid is WGS84
     istanbul: EarthLocation = EarthLocation(lat=41.015137, lon=28.979530, height=0 * u.m)
     ist_timezone = pytz.timezone("Turkey")
+    utc_timezone = pytz.timezone("utc")
     print(f"Target coordinates (lat,lon): {istanbul.lat}, {istanbul.lon}")
 
     # Time analysis config (stepsize, duration, init time)
@@ -40,7 +39,7 @@ if __name__ == '__main__':
     # ***** Generate the altitude interpolators *****
 
     # Convert time list into a float list for use with the interpolator (possible loss of precision)
-    t__float_list = list(map(lambda t: t.timestamp(), sun_alt_az_list.obstime.to_datetime()))
+    t__float_list = sun_alt_az_list.obstime.to_value("unix")
 
     # Init interpolators (for splines, root finding possible for 3rd degree (cubics) only)
     sun_alt_interpolator = interpolate.Akima1DInterpolator(t__float_list, sun_alt_az_list.alt.deg)
@@ -48,7 +47,7 @@ if __name__ == '__main__':
 
     # Sample interpolation result - to check things
     interp_time: Time = Time("2020-04-12 03:33:48.776906", scale="utc")
-    sun_interp_alt = sun_alt_interpolator(interp_time.to_datetime().timestamp())
+    sun_interp_alt = sun_alt_interpolator(interp_time.to_datetime(utc_timezone).timestamp())
 
     print(f"Sample interpolation result at {interp_time.to_datetime(ist_timezone)}")
     print(
@@ -64,13 +63,13 @@ if __name__ == '__main__':
     for event_time in rise_set_events:
         deriv = sun_interpolator_deriv_alt(event_time)
         if deriv > 0:
-            sun_rise_time = Time(datetime.fromtimestamp(event_time), format="datetime", scale="utc")
+            sun_rise_time = Time(event_time, format="unix", scale="utc")
             print("Sunrise time:")
         else:
-            sun_set_time = Time(datetime.fromtimestamp(event_time), format="datetime", scale="utc")
+            sun_set_time = Time(event_time, format="unix", scale="utc")
             print("Sunset time:")
         print(
-            Time(datetime.fromtimestamp(event_time), format="datetime", scale="utc").to_datetime(timezone=ist_timezone))
+            Time(event_time, format="unix", scale="utc").to_datetime(timezone=ist_timezone))
         # print(f"Altitude (deg) : {sun_alt_interpolator(event_time)}")
 
     # Akima
@@ -93,7 +92,7 @@ if __name__ == '__main__':
         else:
             print("Sun lowest time:")
         print(
-            Time(datetime.fromtimestamp(event_time), format="datetime", scale="utc").to_datetime(timezone=ist_timezone))
+            Time(event_time, format="unix", scale="utc").to_datetime(timezone=ist_timezone))
         print(f"Altitude (deg) : {sun_alt_interpolator(event_time)}")
 
     # ***** Plot the Sun Alt angles *****
@@ -112,6 +111,6 @@ if __name__ == '__main__':
     plt.title(f"Sun Altitude at Istanbul ({init_time.to_datetime(timezone=ist_timezone).date()})")
     plt.xlabel("Time [Local]")
     plt.ylabel("Altitude [deg]")
-    plt.legend(["Sun", "sun rise", "sun set"])
+    plt.legend(["Sun", "Sun rise", "Sun set"])
 
     plt.show()
