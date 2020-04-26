@@ -13,8 +13,10 @@ from frames.teme import TEME
 
 if __name__ == '__main__':
     # ****** Config and general setting up ******
-    # Example is from the book:
-    # Fundamentals of Astrodynamics and Applications 4th Ed. David A. Vallado, Section 3.7, pp.233-234
+    # Example is from the paper:
+    # Vallado, David A., Paul Crawford, Richard Hujsak, and T.S. Kelso, “Revisiting Spacetrack Report #3,”
+    # presented at the AIAA/AAS Astrodynamics Specialist Conference, Keystone, CO, 2006 August 21–24.
+    # https://celestrak.com/publications/AIAA/2006-6753/
 
     # Init TLE
     line1 = "1 00005U 58002B   00179.78495062  .00000023  00000-0  28098-4 0  4753"
@@ -48,7 +50,7 @@ if __name__ == '__main__':
 
     print(f"TEME object: {coord_teme}")
 
-    # Vallado pg.234
+    # Values from Vallado's paper
     v_TEME_true = CartesianDifferential(d_x=[-2.232832783, -4.110453490, -3.157345433], unit=u.km / u.s, copy=True)
     r_TEME_true = CartesianRepresentation(x=[-9060.47373569, 4658.70952502, 813.68673153], unit=u.km, copy=True)
     r_TEME_true = TEME(r_TEME_true.with_differentials(v_TEME_true), obstime=output_time,
@@ -65,7 +67,7 @@ if __name__ == '__main__':
     print(f"Pos vector (GCRS) : {coord_gcrs.cartesian}")
     print(f"Vel vector (GCRS) : {coord_gcrs.velocity}")
 
-    # Vallado pg.234 - this is actually in J2000 but the difference is less than a meter
+    # Values from Vallado's paper - this is actually in J2000 but the difference is less than a meter
     v_GCRS_true = CartesianDifferential(d_x=[-2.233348094, -4.110136162, -3.157394074], unit=u.km / u.s, copy=True)
     r_GCRS_true = CartesianRepresentation(x=[-9059.9413786, 4659.6972000, 813.9588875], unit=u.km, copy=True)
     r_GCRS_true = GCRS(r_GCRS_true.with_differentials(v_GCRS_true), obstime=output_time,
